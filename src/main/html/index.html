@@ -26,6 +26,7 @@
   <script src='lib/jsoneditor.min.js' type='text/javascript'></script>
   <script src='lib/marked.js' type='text/javascript'></script>
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
+  <script src="lib/stats.min.js" type='text/javascript'></script>
 
   <!-- Some basic translations -->
   <!-- <script src='lang/translator.js' type='text/javascript'></script> -->
@@ -33,12 +34,13 @@
   <!-- <script src='lang/en.js' type='text/javascript'></script> -->
 
   <script type="text/javascript">
+
     $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        url = "http://petstore.swagger.io/v2/swagger.json";
+        url = "https://legacy-api-sandbox.socialtables.com/swagger.json"; //http://petstore.swagger.io/v2/swagger.json";
       }
 
       hljs.configure({
@@ -85,7 +87,33 @@
           console.log.apply(console, arguments);
         }
       }
+
   });
+
+  function numDomNodes(node) {
+    if(!node.children || node.children.length == 0)
+      return 0;
+    var childrenCount = Array.from(node.children).map(numDomNodes);
+    return node.children.length + childrenCount.reduce((p, c) => p + c, 0);
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+  
+      var stats = new Stats();
+      var domPanel = new Stats.Panel('DOM Nodes', '#0ff', '#002');
+      stats.addPanel(domPanel);
+      stats.showPanel(3);
+      document.body.appendChild(stats.dom);
+      var TIMEOUT = 100;
+      setTimeout(function timeoutFunc() {
+        // Only update DOM node graph when we have time to spare to call
+        // numDomNodes(), which is a fairly expensive function.
+        requestIdleCallback(function() {
+          domPanel.update(numDomNodes(document.body), 1500);
+          setTimeout(timeoutFunc, TIMEOUT);
+        });
+      }, TIMEOUT);
+    });
   </script>
 </head>
 
