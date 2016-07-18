@@ -275,17 +275,20 @@ window.Docs = {
 	},
 
 	expandOperationsForResource: function(resource) {
+		console.log("EXPAND");
+		console.log(resource);
+
 		// Make sure the resource container is open..
 		Docs.expandEndpointListForResource(resource);
 
-		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
-			return;
-		}
+		// if (resource == '') {
+		// 	$('.resource ul.endpoints li.operation div.content').slideDown();
+		// 	return;
+		// }
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.expandOperation($(this));
-		});
+		// $('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+		// 	Docs.expandOperation($(this));
+		// });
 	},
 
 	collapseOperationsForResource: function(resource) {
@@ -20258,6 +20261,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       }
       resource.id = id;
       resources[id] = resource;
+      
       this.addResource(resource, this.model.auths);
     }
 
@@ -20286,6 +20290,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       auths: auths,
       swaggerOptions: this.options.swaggerOptions
     });
+    
     $('#resources', this.el).append(resourceView.render().el);
   },
 
@@ -22432,10 +22437,24 @@ SwaggerUi.Views.ResourceView = Backbone.View.extend({
   },
 
   render: function(){
-    var methods = {};
 
 
     $(this.el).html(Handlebars.templates.resource(this.model));
+
+
+    $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
+    $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
+    // $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
+    // 
+    
+
+    $('.expandResource', this.el).click(this.expandOperation.bind(this, 'expandOperationsForResource'));
+    return this;
+  },
+
+  expandOperation: function(fnName, e){
+    console.log("click");
+    var methods = {};
 
     // Render each operation
     for (var i = 0; i < this.model.operationsArray.length; i++) {
@@ -22456,11 +22475,8 @@ SwaggerUi.Views.ResourceView = Backbone.View.extend({
       this.addOperation(operation);
     }
 
-    $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
-    $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
-    $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
-
-    return this;
+    // this.addOperation(operation);
+    this.callDocs(fnName, e);
   },
 
   addOperation: function(operation) {

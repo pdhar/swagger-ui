@@ -104,6 +104,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       }
       resource.id = id;
       resources[id] = resource;
+      
       this.addResource(resource, this.model.auths);
     }
 
@@ -132,6 +133,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       auths: auths,
       swaggerOptions: this.options.swaggerOptions
     });
+    
     $('#resources', this.el).append(resourceView.render().el);
   },
 

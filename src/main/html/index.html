@@ -96,24 +96,25 @@
     var childrenCount = Array.from(node.children).map(numDomNodes);
     return node.children.length + childrenCount.reduce((p, c) => p + c, 0);
   };
+  // 455000 nodes
 
-  document.addEventListener('DOMContentLoaded', function() {
+  // document.addEventListener('DOMContentLoaded', function() {
   
-      var stats = new Stats();
-      var domPanel = new Stats.Panel('DOM Nodes', '#0ff', '#002');
-      stats.addPanel(domPanel);
-      stats.showPanel(3);
-      document.body.appendChild(stats.dom);
-      var TIMEOUT = 100;
-      setTimeout(function timeoutFunc() {
-        // Only update DOM node graph when we have time to spare to call
-        // numDomNodes(), which is a fairly expensive function.
-        requestIdleCallback(function() {
-          domPanel.update(numDomNodes(document.body), 1500);
-          setTimeout(timeoutFunc, TIMEOUT);
-        });
-      }, TIMEOUT);
-    });
+  //     var stats = new Stats();
+  //     var domPanel = new Stats.Panel('DOM Nodes', '#0ff', '#002');
+  //     stats.addPanel(domPanel);
+  //     stats.showPanel(3);
+  //     document.body.appendChild(stats.dom);
+  //     var TIMEOUT = 100;
+  //     setTimeout(function timeoutFunc() {
+  //       // Only update DOM node graph when we have time to spare to call
+  //       // numDomNodes(), which is a fairly expensive function.
+  //       requestIdleCallback(function() {
+  //         domPanel.update(numDomNodes(document.body), 1500);
+  //         setTimeout(timeoutFunc, TIMEOUT);
+  //       });
+  //     }, TIMEOUT);
+  //   });
   </script>
 </head>
 

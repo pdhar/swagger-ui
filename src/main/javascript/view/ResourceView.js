@@ -14,10 +14,24 @@ SwaggerUi.Views.ResourceView = Backbone.View.extend({
   },
 
   render: function(){
-    var methods = {};
 
 
     $(this.el).html(Handlebars.templates.resource(this.model));
+
+
+    $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
+    $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
+    // $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
+    // 
+    
+
+    $('.expandResource', this.el).click(this.expandOperation.bind(this, 'expandOperationsForResource'));
+    return this;
+  },
+
+  expandOperation: function(fnName, e){
+    console.log("click");
+    var methods = {};
 
     // Render each operation
     for (var i = 0; i < this.model.operationsArray.length; i++) {
@@ -38,11 +52,8 @@ SwaggerUi.Views.ResourceView = Backbone.View.extend({
       this.addOperation(operation);
     }
 
-    $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
-    $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
-    $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
-
-    return this;
+    // this.addOperation(operation);
+    this.callDocs(fnName, e);
   },
 
   addOperation: function(operation) {

@@ -159,17 +159,20 @@ window.Docs = {
 	},
 
 	expandOperationsForResource: function(resource) {
+		console.log("EXPAND");
+		console.log(resource);
+
 		// Make sure the resource container is open..
 		Docs.expandEndpointListForResource(resource);
 
-		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
-			return;
-		}
+		// if (resource == '') {
+		// 	$('.resource ul.endpoints li.operation div.content').slideDown();
+		// 	return;
+		// }
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.expandOperation($(this));
-		});
+		// $('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+		// 	Docs.expandOperation($(this));
+		// });
 	},
 
 	collapseOperationsForResource: function(resource) {
